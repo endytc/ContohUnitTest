@@ -74,22 +74,21 @@ public class Statistik {
         }
     }
 
+//    
     public int[] getUrutan() {
-        int[] a = angka.clone();
-        int in, out;
-        for (out = 1; out < a.length; out++) // out is dividing line
-        {
-            int temp = a[out];// remove marked item
-            in = out;// start shifts at out
-            while (in > 0 && a[in - 1] >= temp) // until one is smaller,
-            {
-                a[in] = a[in - 1];
-                --in;
-            }
-            a[in] = temp;
-        } // end for
+        int[] a = angka;
+        int out, in;
+        for(out=a.length-1; out>1; out--)
+            for (in = 0; in < out; in++) {
+                if (a[in] > a[in + 1]) {
+                    int temp=a[in];
+                    a[in]=a[in+1];
+                    a[in+1]=temp;
+                }
+         }
         return a;
     }
+    
     public Integer getMedian(){
         int urutan[]=getUrutan();
         try{
