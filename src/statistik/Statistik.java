@@ -18,17 +18,31 @@ import java.util.logging.Logger;
 public class Statistik {
 
     private int[] angka;
+    public Statistik(){
+        
+    }
+    public Statistik(int[] angka){
+        this.setAngka(angka);
+    }
+    public Statistik(String angka){
+        this.setValidData(angka);
+    }
     
     public void setAngka(int[] angka){
         this.angka=angka;
     }
+
+    public int[] getAngka() {
+        return angka;
+    }
+    
     public void inputkanAngka() {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         System.out.print("Masukkan beberapa angka dengan spasi sebagai pemisah: ");
         try {
             String angkaStr = br.readLine();
-            if (!this.isValid(angkaStr) && !angkaStr.equals("exit")) {
-                System.out.println("inputan masih salah, ketik exit untuk keluar");
+            if (!this.setValidData(angkaStr) && !angkaStr.equals("exit")) {
+                System.err.println("inputan salah, harus berupa angka bulat, ketik exit untuk keluar");
                 this.inputkanAngka();
             } else if (!angkaStr.equals("exit")) {
                 System.out.println("Rata-rata   : "+this.getRataRata());
@@ -45,8 +59,10 @@ public class Statistik {
      * @param angkaString
      * @return 
      */
-    public boolean isValid(String angkaString) {
+    public boolean setValidData(String angkaString) {
         while (!angkaString.equals(angkaString.replace("  ", " "))) {
+            angkaString=angkaString.replaceFirst("  ", " ");
+//            System.out.println(angkaString);
         };
 
         String[] tampung = angkaString.split(" ");
@@ -74,18 +90,20 @@ public class Statistik {
         }
     }
 
-//    
     public int[] getUrutan() {
-        int[] a = angka;
-        int out, in;
-        for(out=a.length-1; out>1; out--)
-            for (in = 0; in < out; in++) {
-                if (a[in] > a[in + 1]) {
-                    int temp=a[in];
-                    a[in]=a[in+1];
-                    a[in+1]=temp;
-                }
-         }
+        int[] a = angka.clone();
+        int in, out;
+        for (out = 1; out < a.length; out++) // out is dividing line
+        {
+            int temp = a[out];// remove marked item
+            in = out;// start shifts at out
+            while (in > 0 && a[in - 1] >= temp) // until one is smaller,
+            {
+                a[in] = a[in - 1];
+                --in;
+            }
+            a[in] = temp;
+        } // end for
         return a;
     }
     
